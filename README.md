@@ -29,26 +29,44 @@ terraform destroy -var-file terraform.tfvars
 ```
 ### Use
 
-```
 amend terraform.tfvars with own AWS access, secret, keyname
 ```
+aws_access_key = "xxxx"
+aws_secret_key = "xxxx"
+aws_key_path = "~/.ssh/aws.pem"
+aws_key_name = "xxxx"
+```
 amend public.tf  - amend with own availability_zone eg. in ap-southeast-2a, subnet_id
+```
 resource "aws_instance" "web-1" {
 availability_zone = "ap-southeast-2a"      
 subnet_id = "${aws_subnet.ap-southeast-2a-public.id}"
 ```
 amend private.tf - amend with own availability_zone eg. in ap-southeast-2a, subnet_id
+```
 resource "aws_instance" "db-1" {
 availability_zone = "ap-southeast-2a"      
 subnet_id = "${aws_subnet.ap-southeast-2a-public.id}"
 ```     
 amend variables.tf - amend with default aws_region, amis - image type eg. current ubuntu version
+```
 variable "aws_region" {
 default = "ap-southeast-2"
 variable "amis" {
 ap-southeast-2 = "ami-47726224" # ubuntu 16.04 LTS
 ```
-amend vpc.tf - amend as shown above
+amend vpc.tf - amend as shown these a few below
+```
+resource "aws_instance" "nat" {
+    ami = "ami-0154c73b" # this is a special ami preconfigured to do NAT Check under Images/AMI
+    availability_zone = "ap-southeast-2a"
+    subnet_id = "${aws_subnet.ap-southeast-2a-public.id}"
+```
+```
+resource "aws_subnet" "ap-southeast-2a-public" {
+    availability_zone = "ap-southeast-2a"
+```
+
 
 ## Author
 
