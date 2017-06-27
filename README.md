@@ -27,22 +27,27 @@ terraform apply -var-file terraform.tfvars
 ```
 terraform destroy -var-file terraform.tfvars
 ```
-## USE
+### Use
 
+```
 amend terraform.tfvars with own AWS access, secret, keyname
+```
 amend public.tf  - amend with own availability_zone eg. in ap-southeast-2a, subnet_id
-     resource "aws_instance" "web-1" {
-       availability_zone = "ap-southeast-2a"      
-       subnet_id = "${aws_subnet.ap-southeast-2a-public.id}"
+resource "aws_instance" "web-1" {
+availability_zone = "ap-southeast-2a"      
+subnet_id = "${aws_subnet.ap-southeast-2a-public.id}"
+```
 amend private.tf - amend with own availability_zone eg. in ap-southeast-2a, subnet_id
-      resource "aws_instance" "db-1" {
-          availability_zone = "ap-southeast-2a"      
-          subnet_id = "${aws_subnet.ap-southeast-2a-public.id}"        
+resource "aws_instance" "db-1" {
+availability_zone = "ap-southeast-2a"      
+subnet_id = "${aws_subnet.ap-southeast-2a-public.id}"
+```     
 amend variables.tf - amend with default aws_region, amis - image type eg. current ubuntu version
-       variable "aws_region" {
-          default = "ap-southeast-2"
-       variable "amis" {
-        ap-southeast-2 = "ami-47726224" # ubuntu 16.04 LTS
+variable "aws_region" {
+default = "ap-southeast-2"
+variable "amis" {
+ap-southeast-2 = "ami-47726224" # ubuntu 16.04 LTS
+```
 amend vpc.tf - amend as shown above
 
 ## Author
