@@ -73,14 +73,15 @@ resource "aws_security_group" "nat" {
         Name = "NATSG"
     }
 }
-
+# https://aws.amazon.com/marketplace?ref_=csl_ec2_dash_featured_ap-southeast-2
+#
 resource "aws_instance" "nat" {
-    ami = "ami-30913f47" # this is a special ami preconfigured to do NAT
-    availability_zone = "eu-west-1a"
+    ami = "ami-0154c73b" # this is a special ami preconfigured to do NAT Check under Images/AMI
+    availability_zone = "ap-southeast-2a"
     instance_type = "m1.small"
     key_name = "${var.aws_key_name}"
     vpc_security_group_ids = ["${aws_security_group.nat.id}"]
-    subnet_id = "${aws_subnet.eu-west-1a-public.id}"
+    subnet_id = "${aws_subnet.ap-southeast-2a-public.id}"
     associate_public_ip_address = true
     source_dest_check = false
 
@@ -97,18 +98,18 @@ resource "aws_eip" "nat" {
 /*
   Public Subnet
 */
-resource "aws_subnet" "eu-west-1a-public" {
+resource "aws_subnet" "ap-southeast-2a-public" {
     vpc_id = "${aws_vpc.default.id}"
 
     cidr_block = "${var.public_subnet_cidr}"
-    availability_zone = "eu-west-1a"
+    availability_zone = "ap-southeast-2a"
 
     tags {
         Name = "Public Subnet"
     }
 }
 
-resource "aws_route_table" "eu-west-1a-public" {
+resource "aws_route_table" "ap-southeast-2a-public" {
     vpc_id = "${aws_vpc.default.id}"
 
     route {
@@ -121,26 +122,26 @@ resource "aws_route_table" "eu-west-1a-public" {
     }
 }
 
-resource "aws_route_table_association" "eu-west-1a-public" {
-    subnet_id = "${aws_subnet.eu-west-1a-public.id}"
-    route_table_id = "${aws_route_table.eu-west-1a-public.id}"
+resource "aws_route_table_association" "ap-southeast-2a-public" {
+    subnet_id = "${aws_subnet.ap-southeast-2a-public.id}"
+    route_table_id = "${aws_route_table.ap-southeast-2a-public.id}"
 }
 
 /*
   Private Subnet
 */
-resource "aws_subnet" "eu-west-1a-private" {
+resource "aws_subnet" "ap-southeast-2a-private" {
     vpc_id = "${aws_vpc.default.id}"
 
     cidr_block = "${var.private_subnet_cidr}"
-    availability_zone = "eu-west-1a"
+    availability_zone = "ap-southeast-2a"
 
     tags {
         Name = "Private Subnet"
     }
 }
 
-resource "aws_route_table" "eu-west-1a-private" {
+resource "aws_route_table" "ap-southeast-2a-private" {
     vpc_id = "${aws_vpc.default.id}"
 
     route {
@@ -153,7 +154,7 @@ resource "aws_route_table" "eu-west-1a-private" {
     }
 }
 
-resource "aws_route_table_association" "eu-west-1a-private" {
-    subnet_id = "${aws_subnet.eu-west-1a-private.id}"
-    route_table_id = "${aws_route_table.eu-west-1a-private.id}"
+resource "aws_route_table_association" "ap-southeast-2a-private" {
+    subnet_id = "${aws_subnet.ap-southeast-2a-private.id}"
+    route_table_id = "${aws_route_table.ap-southeast-2a-private.id}"
 }
